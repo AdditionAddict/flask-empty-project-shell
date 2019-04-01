@@ -15,6 +15,7 @@ def create_app(config_name):
 
     db.init_app(app)
     CORS(app)
+    app.config['CORS_HEADERS'] = 'Content-Type'
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
