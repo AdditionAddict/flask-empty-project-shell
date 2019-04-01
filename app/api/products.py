@@ -6,9 +6,7 @@ from flask import jsonify, request
 @api.route('/products/', methods=['GET'])
 def get_products():
     products = Product.query.all()
-    return jsonify({
-      'products': [p.to_json() for p in products]
-    }), 200
+    return jsonify([p.to_json() for p in products]), 200
 
 @api.route('/products/', methods=['POST'])
 def new_product():
