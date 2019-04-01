@@ -7,7 +7,7 @@ from flask import jsonify, request
 def get_products():
     products = Product.query.all()
     return jsonify({
-      'products': {p.to_json() for p in products}
+      'products': [p.to_json() for p in products]
     }), 200
 
 @api.route('/products/', methods=['POST'])
