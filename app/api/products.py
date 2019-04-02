@@ -2,6 +2,7 @@ from . import api
 from ..models import Product
 from .. import db
 from flask import jsonify, request
+from .authentication import auth
 
 @api.route('/products/', methods=['GET'])
 def get_products():
@@ -10,6 +11,7 @@ def get_products():
     return jsonify([p.to_json() for p in products]), 200
 
 @api.route('/products/', methods=['POST'])
+@auth.login_required
 def new_product():
     product = Product.from_json(request.json)
     db.session.add(product)
@@ -17,6 +19,7 @@ def new_product():
     return jsonify(product.to_json()), 201
 
 @api.route('/products/<int:id>', methods=['DELETE'])
+@auth.login_required
 def delete_product(id):
     product = Product.query.get_or_404(id)
     db.session.delete(product)
@@ -24,6 +27,7 @@ def delete_product(id):
     return jsonify({"success": True}), 200
 
 @api.route('/products/<int:id>', methods=['PUT'])
+@auth.login_required
 def edit_product(id):
     product = Product.query.get_or_404(id)
 

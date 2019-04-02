@@ -19,26 +19,14 @@ def verify_password(name_or_token, password):
         return g.current_user is not None
     user = User.query.filter_by(username=name_or_token).first()
     if not user:
-        # allow non user access e.g. get all products 
-        return True
+        return False
     g.current_user = user
     g.token_used = False
     return user.verify_password(password)
 
-# @auth.error_handler
-# def auth_error():
-#     return unauthorized('Invalid credentials')
-
 @auth.error_handler
 def auth_error():
     return jsonify({'success': False})
-
-@api.before_request
-@auth.login_required
-def before_request():
-    if not g.current_user.is_anonymous and \
-        not g.current_user.confirmed:
-        return forbidden('Unconfirmed account')
 
 @api.route('/login', methods=['POST'])
 def get_token():
