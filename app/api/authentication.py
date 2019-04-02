@@ -19,7 +19,8 @@ def verify_password(name_or_token, password):
         return g.current_user is not None
     user = User.query.filter_by(username=name_or_token).first()
     if not user:
-        return False
+        # allow non user access e.g. get all products 
+        return True
     g.current_user = user
     g.token_used = False
     return user.verify_password(password)
