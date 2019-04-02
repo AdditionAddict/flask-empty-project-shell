@@ -29,7 +29,7 @@ def verify_password(name_or_token, password):
 def auth_error():
     return jsonify({'success': False})
 
-@api.route('/login', methods=['POST'])
+@api.route('/login', methods=['GET'])
 @auth.login_required
 def get_token():
     print('login route')
