@@ -11,7 +11,7 @@ auth = HTTPBasicAuth()
 def verify_password(name_or_token, password):
     """Return True if login valid; Uses the User method verify_password;
     If password is blank, token is assumed"""
-    print(name_or_token, password)
+    print('login:', name_or_token, password)
     if name_or_token == '':
         return False
     if password == '':
