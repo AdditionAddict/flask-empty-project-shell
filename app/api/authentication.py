@@ -32,7 +32,14 @@ def auth_error():
 @api.route('/login', methods=['POST'])
 @auth.login_required
 def get_token():
+    print('login route')
     if g.current_user.is_anonymous or g.token_used:
+        print('auth failed')
+        print(g.current_user.is_anonymous)
+        print(g.token_used)
         return jsonify({'success': False})
+    print('auth succeed')
+    print(jsonify({'token': g.current_user.generate_auth_token(
+        expiration=3600), 'expiration': 3600, 'success': True}))
     return jsonify({'token': g.current_user.generate_auth_token(
         expiration=3600), 'expiration': 3600, 'success': True})
