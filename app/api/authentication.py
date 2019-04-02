@@ -29,6 +29,7 @@ def auth_error():
     return jsonify({'success': False})
 
 @api.route('/login', methods=['POST'])
+@auth.login_required
 def get_token():
     if g.current_user.is_anonymous or g.token_used:
         return jsonify({'success': False})
