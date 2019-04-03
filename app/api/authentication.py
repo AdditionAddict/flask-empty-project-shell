@@ -6,7 +6,6 @@ from . import api
 from ..models import User
 
 auth = HTTPBasicAuth()
-token_auth = HTTPTokenAuth(scheme='Token')
 
 
 @auth.verify_password
