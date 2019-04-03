@@ -101,4 +101,5 @@ class User(UserMixin, db.Model):
             data = s.loads(token)
         except:
             return None
-        return User.query.get(data['user_id'])
+        print(data)
+        return User.query.get(data['id'])
