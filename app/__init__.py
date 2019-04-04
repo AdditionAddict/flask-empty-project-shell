@@ -14,7 +14,7 @@ def create_app(config_name):
     config[config_name].init_app(app)
 
     db.init_app(app)
-    CORS(app)
+    CORS(app, supports_credentials=True)
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
