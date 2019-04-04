@@ -7,6 +7,7 @@ from flask_cors import cross_origin
 
 
 @api.route('/products/', methods=['GET'])
+@cross_origin()
 def get_products():
     print('get_products')
     products = Product.query.all()
