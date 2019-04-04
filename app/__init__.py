@@ -14,7 +14,7 @@ def create_app(config_name):
     config[config_name].init_app(app)
 
     db.init_app(app)
-    CORS(app)
+    CORS(app, origins=['http://localhost', 'https://sportsstoreapi.herokuapp.com'])
     # app.config['CORS_HEADERS'] = 'Content-Type'
 
     from .main import main as main_blueprint
