@@ -15,7 +15,10 @@ def create_app(config_name):
 
     db.init_app(app)
     CORS(app,
-        origins=['http://localhost:80', 'https://sportsstoreapi.herokuapp.com'],
+        origins=[
+         'http://localhost',
+         'http://localhost/admin/auth',
+         'https://sportsstoreapi.herokuapp.com'],
         supports_credentials=True)
     # app.config['CORS_HEADERS'] = 'Content-Type'
 
