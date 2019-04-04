@@ -16,7 +16,7 @@ class Product(db.Model):
             'name': self.name,
             'category': self.category,
             'description': self.description,
-            'price': float(self.price) # Decimal to float
+            'price': float(self.price or 0) # Decimal to float
         }
         return json_product
 
