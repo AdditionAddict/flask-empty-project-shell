@@ -31,6 +31,7 @@ def delete_product(id):
     return jsonify({"success": True}), 200
 
 @api.route('/products/<int:id>', methods=['PUT'])
+@cross_origin(allow_headers=['Content-Type', 'Authorization'])
 @auth.login_required
 def edit_product(id):
     product = Product.query.get_or_404(id)
