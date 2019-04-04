@@ -13,6 +13,7 @@ def verify_password(name_or_token, password):
     """Return True if login valid; Uses the User method verify_password;
     If password is blank, token is assumed"""
     print('login:', name_or_token, password)
+    print('user:', User.verify_auth_token(name_or_token))
     if name_or_token == '':
         return False
     if password == '':
