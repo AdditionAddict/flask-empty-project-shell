@@ -12,7 +12,7 @@ def get_products():
     return jsonify([p.to_json() for p in products]), 200
 
 @api.route('/products/', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def new_product():
     product = Product.from_json(request.json)
     db.session.add(product)
