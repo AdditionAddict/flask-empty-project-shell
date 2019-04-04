@@ -14,8 +14,8 @@ def get_products():
     return jsonify([p.to_json() for p in products]), 200
 
 @api.route('/products/', methods=['POST'])
+@cross_origin(allow_headers=['Content-Type', 'Authorization'], supports_credentials=True)
 @auth.login_required
-@cross_origin(allow_headers=['Content-Type'], supports_credentials=True)
 def new_product():
     product = Product.from_json(request.json)
     db.session.add(product)
