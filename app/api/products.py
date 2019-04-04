@@ -3,6 +3,8 @@ from ..models import Product
 from .. import db
 from flask import jsonify, request
 from .authentication import auth
+from flask_cors import cross_origin
+
 
 @api.route('/products/', methods=['GET'])
 def get_products():
@@ -12,6 +14,7 @@ def get_products():
 
 @api.route('/products/', methods=['POST'])
 @auth.login_required
+@cross_origin(allow_headers=['Content-Type'], supports_credentials=True)
 def new_product():
     product = Product.from_json(request.json)
     db.session.add(product)
