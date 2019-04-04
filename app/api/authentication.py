@@ -1,5 +1,6 @@
 from flask import g, jsonify
 from flask_httpauth import HTTPBasicAuth
+from flask_cors import cross_origin
 from flask_login import current_user
 from .errors import unauthorized, forbidden
 from . import api
