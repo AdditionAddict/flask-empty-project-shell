@@ -33,6 +33,7 @@ def auth_error():
 
 @api.route('/login', methods=['POST'])
 @auth.login_required
+@cross_origin(supports_credentials=True)
 def get_token():
     print('login route')
     if g.current_user.is_anonymous or g.token_used:
