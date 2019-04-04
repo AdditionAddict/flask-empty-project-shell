@@ -15,7 +15,6 @@ def create_app(config_name):
 
     db.init_app(app)
     CORS(app, origins="http://localhost",
-      allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
       supports_credentials=True)
 
     from .main import main as main_blueprint
