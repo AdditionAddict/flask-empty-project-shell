@@ -1,6 +1,5 @@
 from flask import g, jsonify
 from flask_httpauth import HTTPBasicAuth
-from flask_cors import cross_origin
 from flask_login import current_user
 from .errors import unauthorized, forbidden
 from . import api
@@ -34,7 +33,6 @@ def auth_error():
 
 @api.route('/login', methods=['POST'])
 @auth.login_required
-@cross_origin(supports_credentials=True)
 def get_token():
     print('login route')
     if g.current_user.is_anonymous or g.token_used:

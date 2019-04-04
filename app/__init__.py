@@ -1,7 +1,7 @@
 from flask import Flask
 from config import config
 from flask_sqlalchemy import SQLAlchemy
-#from flask_cors import CORS
+from flask_cors import CORS
 
 
 
@@ -14,8 +14,10 @@ def create_app(config_name):
     config[config_name].init_app(app)
 
     db.init_app(app)
-    #CORS(app)
-    # app.config['CORS_HEADERS'] = 'Content-Type'
+    CORS(app, CORS(app,
+        origins="http://localhost",
+        allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
+        supports_credentials=True)
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)

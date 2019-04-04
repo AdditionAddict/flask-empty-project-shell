@@ -33,8 +33,6 @@ class HerokuConfig(ProductionConfig):
         file_handler.setLevel(logging.INFO)
         app.logger.addHandler(file_handler)
 
-        logging.getLogger('flask_cors').level = logging.DEBUG
-
         SSL_REDIRECT = True if os.environ.get('DYNO') else False
 
 config = {
