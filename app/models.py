@@ -52,6 +52,20 @@ class Order(db.Model):
         }
         return json_order
 
+    @staticmethod
+    def from_json(json_order):
+
+        order_id = json_order.get('order_id')
+        name = json_order.get('name')
+        address = json_order.get('address')
+        city = json_order.get('city')
+        state = json_order.get('state')
+        zip = json_order.get('zip')
+        country = json_order.get('country')
+
+        return Order(order_id=order_id, name=name, address=address,
+            city=city, state=state, zip=zip, country=country)
+
 class OrderLine(db.Model):
     __tablename__ = 'order_lines'
 

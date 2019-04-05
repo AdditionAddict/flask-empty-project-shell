@@ -2,6 +2,7 @@ from . import api
 from ..models import Order
 from .. import db
 from flask import jsonify
+from .authentication import auth
 
 @api.route('/orders/', methods=['GET'])
 def get_orders():
@@ -9,6 +10,14 @@ def get_orders():
     return jsonify({
       'orders': [o.to_json() for o in orders]
     })
+
+@api.route('/orders/', methods=['POST'])
+@auth.login_required
+def new_order():
+    order = Order.from_json(request.json)
+    db.session.add(order)
+    db.session.commit()
+    return jsonify(order.to_json()), 201
 
 @api.route('/orders/<int:id>', methods=['DELETE'])
 def delete_order(id):
