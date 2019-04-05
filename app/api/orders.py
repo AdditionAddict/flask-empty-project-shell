@@ -7,9 +7,7 @@ from .authentication import auth
 @api.route('/orders/', methods=['GET'])
 def get_orders():
     orders = Order.query.all()
-    return jsonify({
-      'orders': [o.to_json() for o in orders]
-    })
+    return jsonify([o.to_json() for o in orders])
 
 @api.route('/orders/', methods=['POST'])
 def new_order():
