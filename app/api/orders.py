@@ -12,7 +12,6 @@ def get_orders():
     })
 
 @api.route('/orders/', methods=['POST'])
-@auth.login_required
 def new_order():
     order = Order.from_json(request.json)
     db.session.add(order)
