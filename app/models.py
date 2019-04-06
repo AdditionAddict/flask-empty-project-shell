@@ -70,9 +70,26 @@ class OrderLine(db.Model):
     __tablename__ = 'order_lines'
 
     order_line_id = Column(db.Integer(), primary_key = True)
-    order_id = Column(db.Integer())
-    product_id = Column(db.Integer())
+    order_id = Column(db.Integer(), db.ForeignKey('orders.order_id'))
+    product_id = Column(db.Integer(), db.ForeignKey('products.product_id'))
     quantity = Column(db.Integer())
+
+    @staticmethod
+    def add_line(order_id, line):
+        product_id = line.get('product_id')
+        quantity = line.get('quantity')
+
+        return OrderLine(order_id=order_id, product_id=product_id,
+            quantity=quantity)
+
+    def to_json(self):
+        json_order_line = {
+            'order_line_id': self.order_line_id,
+            'order_id': self.order_id,
+            'product_id': self.product_id,
+            'quantity': self.quantity
+        }
+        return json_order_line
 
 # User model
 #
