@@ -1,5 +1,6 @@
 from app import db
 from sqlalchemy import Column
+from sqlalchemy.orm import relationship
 
 class Product(db.Model):
     __tablename__ = 'products'
@@ -10,24 +11,8 @@ class Product(db.Model):
     description = Column(db.String(200))
     price = Column(db.Numeric(12, 2))
 
-    def to_json(self):
-        json_product = {
-            'product_id': self.product_id,
-            'name': self.name,
-            'category': self.category,
-            'description': self.description,
-            'price': float(self.price or 0) # Decimal to float
-        }
-        return json_product
-
-    @staticmethod
-    def from_json(json_product):
-        name = json_product.get('name')
-        category = json_product.get('category')
-        description = json_product.get('description')
-        price = json_product.get('price')
-        return Product(name=name, category=category,
-            description=description, price=price)
+    # relationships
+    products = relationship("OrderLine", back_populates="product")
 
 class Order(db.Model):
     __tablename__ = 'orders'
@@ -40,31 +25,8 @@ class Order(db.Model):
     zip = Column(db.String(7))
     country = Column(db.String(20))
 
-    def to_json(self):
-        json_order = {
-            'order_id': self.order_id,
-            'name': self.name,
-            'address': self.address,
-            'city': self.city,
-            'state': self.state,
-            'zip': self.zip,
-            'country': self.country
-        }
-        return json_order
-
-    @staticmethod
-    def from_json(json_order):
-
-        order_id = json_order.get('order_id')
-        name = json_order.get('name')
-        address = json_order.get('address')
-        city = json_order.get('city')
-        state = json_order.get('state')
-        zip = json_order.get('zip')
-        country = json_order.get('country')
-
-        return Order(order_id=order_id, name=name, address=address,
-            city=city, state=state, zip=zip, country=country)
+    # relationships
+    products_sold = relationship("OrderLine", back_populates="order")
 
 class OrderLine(db.Model):
     __tablename__ = 'order_lines'
@@ -74,22 +36,10 @@ class OrderLine(db.Model):
     product_id = Column(db.Integer(), db.ForeignKey('products.product_id'))
     quantity = Column(db.Integer())
 
-    @staticmethod
-    def add_line(order_id, line):
-        product_id = line.get('product_id')
-        quantity = line.get('quantity')
+    # relationships
+    product = relationship("Product", back_populates="products")
+    order = relationship("Order", back_populates="products_sold")
 
-        return OrderLine(order_id=order_id, product_id=product_id,
-            quantity=quantity)
-
-    def to_json(self):
-        json_order_line = {
-            'order_line_id': self.order_line_id,
-            'order_id': self.order_id,
-            'product_id': self.product_id,
-            'quantity': self.quantity
-        }
-        return json_order_line
 
 # User model
 #
