@@ -1,3 +1,4 @@
+from marshmallow import ValidationError
 from . import api
 from ..models import Order, OrderLine, Product
 from .. import db
@@ -9,22 +10,19 @@ from ..schema import OrderSchema, OrderLineSchema
 
 @api.route('/orders/', methods=['GET'])
 def get_orders():
-    service = OrderListService({}, db.session)
-
-    print(OrderLineSchema._declared_fields)
+    service = OrderListService()
     return jsonify(service.get())
 
 @api.route('/orders/', methods=['POST'])
 def new_order():
-    order = Order.from_json(request.json)
-    db.session.add(order)
-    db.session.flush()
-    order_id = order.order_id
-    for line in request.json.get('lines'):
-        order_line = OrderLine.add_line(order_id, line)
-        db.session.add(order_line)
+    schema = OrderSchema()
+    try:
+        order = schema.load(request.get_json())
+    except ValidationError as err:
+        print('Validation Error: ', err.messages)
+    db.session.add(order.data)
     db.session.commit()
-    return jsonify(order.to_json()), 201
+    return jsonify(schema.dump(order)), 201
 
 @api.route('/orders/<int:id>', methods=['DELETE'])
 def delete_order(id):
@@ -35,15 +33,10 @@ def delete_order(id):
 
 @api.route('/orders/<int:id>', methods=['PUT'])
 def edit_order(id):
+    # get order
     order = Order.query.get_or_404(id)
-
-    order.order_id = request.json.get('order_id')
-    order.name = request.json.get('name')
-    order.address = request.json.get('address')
-    order.city = request.json.get('city')
-    order.state = request.json.get('state')
-    order.zip = request.json.get('zip')
-    order.country = request.json.get('country')
-
-    db.session.add(order)
+    # update order and commit
+    schema = OrderSchema()
+    schema.load(request.get_json(), instance=order)
     db.session.commit()
+    return jsonify(schema.dump(order))

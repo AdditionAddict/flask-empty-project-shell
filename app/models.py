@@ -17,6 +17,11 @@ class Product(db.Model):
 class Order(db.Model):
     __tablename__ = 'orders'
 
+    def __init__(self, products_sold=None, *args, **kwargs):
+        super(Order, self).__init__(*args, **kwargs)
+        products_sold = products_sold or []
+        for prod in products_sold:
+            self.products_sold.append(prod)
     order_id = Column(db.Integer(), primary_key = True)
     name = Column(db.String(30))
     address = Column(db.String(100))
@@ -27,6 +32,8 @@ class Order(db.Model):
 
     # relationships
     products_sold = relationship("OrderLine", back_populates="order")
+
+
 
 class OrderLine(db.Model):
     __tablename__ = 'order_lines'
